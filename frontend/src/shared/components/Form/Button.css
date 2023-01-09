@@ -1,0 +1,44 @@
+.button {
+  padding: 1.3em 3em;
+  background-color: rgb(41, 62, 95);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.button:hover {
+  transition: 0.7s;
+  background-color: royalblue;
+}
+
+.button--inverse {
+  border: 2px solid #f2f2f2;
+  background-color: transparent;
+  color: #fff;
+}
+
+.button--inverse:hover {
+  background-color: rgb(41, 62, 95);
+  color: #ffff;
+}
+
+.button--danger {
+  background-color: rgb(252, 66, 66);
+  color: #fff;
+}
+
+.button--danger:hover {
+  background-color: rgb(243, 24, 24);
+}
+
+.button:disabled,
+.button:hover:disabled,
+.button:active:disabled {
+  background: #ccc;
+  color: #979797;
+  border-color: #ccc;
+  cursor: not-allowed;
+}
