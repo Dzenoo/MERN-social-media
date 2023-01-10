@@ -18,8 +18,9 @@
   width: 100%;
   font: inherit;
   border: 1px solid #e0fcfd;
-  background: #f8f8f8;
+  background: rgb(246, 246, 246);
   padding: 1.12rem 0.25rem;
+  resize: vertical;
 }
 
 .form-control input:focus,

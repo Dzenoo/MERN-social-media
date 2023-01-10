@@ -1,5 +1,5 @@
 .navigation {
-  background-color: #232323;
+  background-color: #fff;
   height: 4rem;
   padding: 12px;
   display: flex;
@@ -9,7 +9,7 @@
 }
 
 .navigation .navigation_logo h1 {
-  color: #fff;
+  color: #000000;
   font-size: 30px;
 }
 
@@ -23,6 +23,26 @@
 .navigation .navigation_menu li a {
   font-size: 20px;
   text-decoration: none;
-  font-weight: bold;
+  color: #000000;
+  padding: 16px;
+  border-radius: 12px;
+}
+
+.navigation .navigation_menu li a:hover {
+  background-color: rgb(41, 62, 95);
+  transition: 0.3s;
   color: #fff;
+}
+
+.navigation_button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
+
+.navigation_button span {
+  cursor: pointer;
+  color: rgb(255, 35, 35);
+  font-size: 20px;
 }

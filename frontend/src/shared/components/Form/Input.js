@@ -14,7 +14,7 @@ const inputReducer = (state, action) => {
     case "TOUCH":
       return {
         ...state,
-        isTouched: tru,
+        isTouched: true,
       };
     default:
       return state;
