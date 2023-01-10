@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "../../shared/hooks/form-hook";
 import {
   VALIDATOR_EMAIL,
@@ -9,9 +9,11 @@ import {
 import Button from "../../shared/components/Form/Button";
 import Card from "../../shared/components/UI/Card";
 import Input from "../../shared/components/Form/Input";
+import { AuthContext } from "../../shared/context/auth-context";
 
 const Auth = () => {
   const [authMode, setAuthMode] = useState(false);
+  const auth = useContext(AuthContext);
   const [formState, inputHandler, setFormData] = useForm(
     {
       name: {
@@ -60,8 +62,8 @@ const Auth = () => {
 
   const AuthHandler = (event) => {
     event.preventDefault();
-
     console.log(formState.inputs);
+    auth.login();
     //BACKEND
   };
 
@@ -104,7 +106,9 @@ const Auth = () => {
         />
 
         <div className="flex">
-          <Button type="submit">{authMode ? "Login" : "Register"}</Button>
+          <Button type="submit" disabled={!formState.isValid}>
+            {authMode ? "Login" : "Register"}
+          </Button>
           <a onClick={switchAuthModeHandler}>
             {authMode ? "Don't have account" : "Have account, login"}
           </a>

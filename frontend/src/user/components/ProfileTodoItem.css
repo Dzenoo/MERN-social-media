@@ -1,0 +1,14 @@
+.todo_item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #fff;
+  width: 400px;
+  margin: 20px;
+}
+
+.todo_item span {
+  background-color: aliceblue;
+  padding: 1em;
+  font-weight: bold;
+}
