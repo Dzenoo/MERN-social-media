@@ -1,0 +1,64 @@
+.todo_item {
+  background: #fff;
+  width: 100%;
+  padding: 20px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1.2em;
+  overflow: hidden;
+}
+
+.todo_item .todo_title {
+  display: flex;
+  gap: 1.2em;
+}
+
+.todo_item .todo_title h1 {
+  font-size: 20px;
+}
+
+.todo_item .todo_title img {
+  width: 30px;
+  border-radius: 60px;
+  height: auto;
+  background-color: #303030;
+  padding: 10px;
+}
+
+.todo_item .todo_description {
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+}
+
+.todo_item .todo_description img {
+  width: 100%;
+  height: auto;
+}
+
+.todo_item .todo_actions {
+  display: flex;
+  gap: 2em;
+  align-items: center;
+}
+
+.todo_item .todo_actions button {
+  padding: 16px 40px;
+  background-color: #303030;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.todo_item .todo_actions button:disabled,
+.todo_item .todo_actions button:hover:disabled,
+.todo_item .todo_actions button:active:disabled {
+  background: #ccc;
+  color: #979797;
+  border-color: #ccc;
+  cursor: not-allowed;
+}

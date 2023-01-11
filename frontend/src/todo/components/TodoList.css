@@ -1,0 +1,9 @@
+.todo_list_menu {
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2em;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+}

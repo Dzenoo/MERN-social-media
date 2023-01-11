@@ -1,7 +1,7 @@
 .button {
   padding: 1.3em 3em;
-  background-color: #fff;
-  color: #303030;
+  background-color: rgb(41, 62, 95);
+  color: #fff;
   border: none;
   border-radius: 12px;
   text-decoration: none;
@@ -24,6 +24,16 @@
 .button--inverse:hover {
   background-color: rgb(41, 62, 95);
   color: #ffff;
+}
+
+.button--action {
+  background-color: rgb(105, 255, 79);
+  color: #fff;
+}
+
+.button--action:hover {
+  background-color: rgb(28, 255, 47);
+  color: #fff;
 }
 
 .button--danger {

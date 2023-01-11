@@ -4,11 +4,22 @@
   align-items: center;
   background-color: #fff;
   width: 400px;
-  margin: 20px;
+  position: relative;
+}
+
+.todo_item .todo_item_img img {
+  width: 100%;
 }
 
 .todo_item span {
   background-color: aliceblue;
   padding: 1em;
   font-weight: bold;
+}
+
+.todo_item .todo_item_actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 12px;
 }

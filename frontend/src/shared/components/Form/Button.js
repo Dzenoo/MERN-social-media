@@ -10,7 +10,9 @@ const Button = (props) => {
         to={props.to}
         className={`button button--${props.size || "default"} ${
           props.inverse && "button--inverse"
-        } ${props.danger && "button--danger"} `}
+        } ${props.danger && "button--danger"} ${
+          props.action && "button--action"
+        }`}
       >
         {props.children}
       </Link>
@@ -24,7 +26,8 @@ const Button = (props) => {
       onClick={props.onClick}
       className={`button button--${props.size || "default"} ${
         props.inverse && "button--inverse"
-      } ${props.danger && "button--danger"} `}
+      } ${props.danger && "button--danger"}
+      ${props.action && "button--action"} `}
     >
       {props.children}
     </button>

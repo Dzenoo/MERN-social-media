@@ -1,39 +1,43 @@
 import React, { useContext } from "react";
 import { AuthContext } from "../../context/auth-context";
 import { Link } from "react-router-dom";
-import { BiLogIn } from "react-icons/bi";
+import { AiOutlineSearch } from "react-icons/ai";
+import { AiOutlineHome } from "react-icons/ai";
 
-import Button from "../Form/Button";
+import User from "../../assets/user.png";
 
 import "./MainNavigation.css";
 
 const MainNavigation = () => {
   const isLoggedIn = useContext(AuthContext).isLoggedIn;
-  const logout = useContext(AuthContext).logout;
 
   return (
     <header className="navigation">
       <div className="navigation_logo">
         <Link to="/" style={{ textDecoration: "none" }}>
-          <h1>App</h1>
+          <h1>Social media</h1>
         </Link>
       </div>
 
       <ul className="navigation_menu">
         <li>
-          <Link to="/">Home</Link>
+          <Link to="/">
+            <AiOutlineHome />
+          </Link>
         </li>
-
-        {isLoggedIn && (
-          <li>
-            <Link to="/profile">Profile</Link>
-          </li>
-        )}
       </ul>
 
       <div className="navigation_button">
-        {!isLoggedIn && <Button to="/register">Login</Button>}
-        <span>{isLoggedIn && <span onClick={logout}>Logout</span>}</span>
+        {!isLoggedIn && <Link to="/register">Login</Link>}
+
+        {isLoggedIn && (
+          <Link to="/profile">
+            <div className="user_img">
+              <img src={User} alt="user" />
+              <h3>John Doe</h3>
+            </div>
+          </Link>
+        )}
       </div>
     </header>
   );

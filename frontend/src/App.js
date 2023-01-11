@@ -7,7 +7,6 @@ import Todos from "./todo/pages/TodoPage";
 import CreateTodo from "./todo/pages/CreateTodo";
 import UpdateTodo from "./todo/pages/UpdateTodo";
 import Profile from "./user/pages/Profile";
-import ProfileSettings from "./user/components/ProfileSettings";
 import Auth from "./user/pages/Auth";
 
 function App() {
@@ -21,29 +20,6 @@ function App() {
     setisLoggedIn(false);
   });
 
-  // const authCtx = useContext(AuthContext);
-
-  // let routes;
-  // if (authCtx.isLoggedIn) {
-  //   routes = (
-  //     <>
-  //       <Route path="/" element={<Todos />} />
-  //       <Route path="/profile" element={<Profile />} />
-  //       <Route path="/profile/new" element={<CreateTodo />} />
-  //       <Route path="/profile/:todoId" element={<UpdateTodo />} />
-  //       <Route path="*" element={<Navigate to="/" />} />
-  //     </>
-  //   );
-  // } else {
-  //   routes = (
-  //     <>
-  //       <Route path="/" element={<Todos />} />
-  //       <Route path="/register" element={<Auth />} />
-  //       <Route path="*" element={<Navigate to="/" />} />
-  //     </>
-  //   );
-  // }
-
   return (
     <>
       <AuthContext.Provider
@@ -53,7 +29,6 @@ function App() {
         <Routes>
           <Route path="/" element={<Todos />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/profile/settings" element={<ProfileSettings />} />
           <Route path="/profile/new" element={<CreateTodo />} />
           <Route path="/profile/:todoId" element={<UpdateTodo />} />
           <Route path="/register" element={<Auth />} />
