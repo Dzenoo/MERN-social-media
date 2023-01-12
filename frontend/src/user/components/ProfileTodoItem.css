@@ -5,6 +5,8 @@
   background-color: #fff;
   width: 400px;
   position: relative;
+  padding: 20px;
+  border-radius: 20px;
 }
 
 .todo_item .todo_item_img img {
@@ -12,7 +14,7 @@
 }
 
 .todo_item span {
-  background-color: aliceblue;
+  background-color: rgb(146, 204, 255);
   padding: 1em;
   font-weight: bold;
 }

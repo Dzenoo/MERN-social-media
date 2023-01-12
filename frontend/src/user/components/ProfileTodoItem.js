@@ -1,14 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import Button from "../../shared/components/Form/Button";
+import { AuthContext } from "../../shared/context/auth-context";
 import "./ProfileTodoItem.css";
 
 const ProfileTodoItem = (props) => {
   const { id, title, description, image, category } = props;
+  const auth = useContext(AuthContext);
 
   return (
     <li className="todo_item" id={id}>
       <div className="todo_item_img">
-        <img src={image} alt="img" />
+        <img src={`http://localhost:8000/${image}`} alt={title} />
       </div>
 
       <div className="todo_item_description">
@@ -19,7 +21,7 @@ const ProfileTodoItem = (props) => {
 
       <div className="todo_item_actions">
         <Button danger>Delete</Button>
-        <Button to={`/profile/${id}`}>Edit</Button>
+        <Button to={`/users/${auth.userId}/${id}`}>Edit</Button>
       </div>
     </li>
   );

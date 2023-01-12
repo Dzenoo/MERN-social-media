@@ -1,34 +1,26 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { useHttp } from "../../shared/hooks/http-hook";
+import { AuthContext } from "../../shared/context/auth-context";
 
 import ProfileTodoList from "../components/ProfileTodoList";
-import img from "../../shared/assets/img.png";
-
-const DUMMY_ITEMS = [
-  {
-    id: "i1",
-    title: "Go to shop",
-    image: img,
-    description: "Today i must go to shop",
-    category: "Shopping",
-  },
-  {
-    id: "i2",
-    title: "Go to shop",
-    image: img,
-    description: "Today i must go to shop",
-    category: "Shopping",
-  },
-  {
-    id: "i3",
-    title: "Go to shop",
-    image: img,
-    description: "Today i must go to shop",
-    category: "Shopping",
-  },
-];
 
 const Profile = () => {
-  const [items, setItems] = useState(DUMMY_ITEMS);
+  const [items, setItems] = useState([]);
+  const { sendRequest, isError, isLoading, clearError } = useHttp();
+  const auth = useContext(AuthContext);
+
+  useEffect(() => {
+    const fetchUserTodos = async () => {
+      try {
+        const responseData = await sendRequest(
+          `http://localhost:8000/api/todos/user/${auth.userId}`
+        );
+        setItems(responseData.todos);
+      } catch (err) {}
+    };
+
+    fetchUserTodos();
+  }, [sendRequest, auth.userId]);
 
   return (
     <div className="profile_wrapper">

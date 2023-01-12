@@ -7,9 +7,9 @@ import "./ProfileTodoList.css";
 const ProfileTodoList = (props) => {
   return (
     <>
-      <Button action to="/profile/new">
-        Add todo
-      </Button>
+      <div className="center">
+        <Button to="/users/new">Add todo</Button>
+      </div>
       <ul className="todo_list">
         {props.items.map((item) => (
           <ProfileTodoItem

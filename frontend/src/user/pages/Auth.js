@@ -1,17 +1,21 @@
 import React, { useContext, useState } from "react";
 import { useForm } from "../../shared/hooks/form-hook";
+import { useHttp } from "../../shared/hooks/http-hook";
 import {
   VALIDATOR_EMAIL,
   VALIDATOR_MINLENGTH,
   VALIDATOR_REQUIRE,
 } from "../../shared/utils/validators";
+import { AuthContext } from "../../shared/context/auth-context";
+import { useNavigate } from "react-router-dom";
 
+import ImageUpload from "../../shared/components/Form/ImageUpload";
 import Button from "../../shared/components/Form/Button";
 import Card from "../../shared/components/UI/Card";
 import Input from "../../shared/components/Form/Input";
-import { AuthContext } from "../../shared/context/auth-context";
 
 const Auth = () => {
+  const navigate = useNavigate();
   const [authMode, setAuthMode] = useState(false);
   const auth = useContext(AuthContext);
   const [formState, inputHandler, setFormData] = useForm(
@@ -31,6 +35,7 @@ const Auth = () => {
     },
     false
   );
+  const { sendRequest, isLoading, isError, clearError } = useHttp();
 
   const switchAuthModeHandler = () => {
     //LOGIN
@@ -52,6 +57,10 @@ const Auth = () => {
             value: "",
             isValid: false,
           },
+          image: {
+            value: null,
+            isValid: false,
+          },
         },
         false
       );
@@ -60,11 +69,43 @@ const Auth = () => {
     setAuthMode((prevAuth) => !prevAuth);
   };
 
-  const AuthHandler = (event) => {
+  const AuthHandler = async (event) => {
     event.preventDefault();
-    console.log(formState.inputs);
-    auth.login();
-    //BACKEND
+
+    if (authMode) {
+      try {
+        const responseData = await sendRequest(
+          "http://localhost:8000/api/users/login",
+          "POST",
+          JSON.stringify({
+            email: formState.inputs.email.value,
+            password: formState.inputs.password.value,
+          }),
+          {
+            "Content-Type": "application/json",
+          }
+        );
+        auth.login(responseData.userId, responseData.token);
+        navigate("/");
+      } catch (err) {}
+    } else {
+      try {
+        const formData = new FormData();
+        formData.append("email", formState.inputs.email.value);
+        formData.append("name", formState.inputs.name.value);
+        formData.append("password", formState.inputs.password.value);
+        formData.append("image", formState.inputs.image.value);
+
+        const responseData = await sendRequest(
+          "http://localhost:8000/api/users/signup",
+          "POST",
+          formData
+        );
+
+        auth.login(responseData.userId, responseData.token);
+        navigate("/");
+      } catch (err) {}
+    }
   };
 
   return (
@@ -83,6 +124,8 @@ const Auth = () => {
             errorText="Please enter a valid name (Can't be empty)"
           />
         )}
+
+        {!authMode && <ImageUpload center id="image" onInput={inputHandler} />}
         <Input
           type="Text"
           label="Email"
