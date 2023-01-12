@@ -1,15 +1,13 @@
 import React, { useContext } from "react";
 import { AuthContext } from "../../context/auth-context";
 import { Link } from "react-router-dom";
-import { AiOutlineSearch } from "react-icons/ai";
 import { AiOutlineHome } from "react-icons/ai";
 
-import User from "../../assets/user.png";
-
 import "./MainNavigation.css";
+import Button from "../Form/Button";
 
 const MainNavigation = () => {
-  const isLoggedIn = useContext(AuthContext).isLoggedIn;
+  const auth = useContext(AuthContext);
 
   return (
     <header className="navigation">
@@ -25,20 +23,17 @@ const MainNavigation = () => {
             <AiOutlineHome />
           </Link>
         </li>
-      </ul>
 
-      <div className="navigation_button">
-        {!isLoggedIn && <Link to="/register">Login</Link>}
-
-        {isLoggedIn && (
-          <Link to="/profile">
-            <div className="user_img">
-              <img src={User} alt="user" />
-              <h3>John Doe</h3>
-            </div>
-          </Link>
+        {auth.isLoggedIn && (
+          <li>
+            <Link to={`/users/${auth.userId}`}>Profile</Link>
+          </li>
         )}
-      </div>
+
+        {!auth.isLoggedIn && <Button to="/register">Login</Button>}
+
+        {auth.isLoggedIn && <Button onClick={auth.logout}>Logout</Button>}
+      </ul>
     </header>
   );
 };
