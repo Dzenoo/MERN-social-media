@@ -1,35 +1,20 @@
-import React, { useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { useForm } from "../../shared/hooks/form-hook";
+import { useParams } from "react-router-dom";
+import { useHttp } from "../../shared/hooks/http-hook";
+import { VALIDATOR_REQUIRE } from "../../shared/utils/validators";
 
 import Card from "../../shared/components/UI/Card";
 import Input from "../../shared/components/Form/Input";
 import Button from "../../shared/components/Form/Button";
-import { VALIDATOR_REQUIRE } from "../../shared/utils/validators";
-import { useParams } from "react-router-dom";
-
-const DUMMY_ITEMS = [
-  {
-    id: "i1",
-    title: "Go to shop",
-    description: "Today i must go to shop",
-    category: "Shopping",
-  },
-  {
-    id: "i2",
-    title: "Go to shop",
-    description: "Today i must go to shop",
-    category: "Shopping",
-  },
-  {
-    id: "i3",
-    title: "Go to shop",
-    description: "Today i must go to shop",
-    category: "Shopping",
-  },
-];
+import { AuthContext } from "../../shared/context/auth-context";
 
 const CreateTodo = () => {
-  const [formState, inputHandler] = useForm(
+  const { sendRequest, isError, isLoading, clearError } = useHttp();
+  const todoId = useParams().todoId;
+  const auth = useContext(AuthContext);
+  const [loadedTodo, setloadedTodo] = useState();
+  const [formState, inputHandler, setFormData] = useForm(
     {
       title: {
         value: "",
@@ -47,14 +32,55 @@ const CreateTodo = () => {
     false
   );
 
-  const todoId = useParams().todoId;
+  useEffect(() => {
+    const fetchTodo = async () => {
+      try {
+        const responseData = await sendRequest(
+          `http://localhost:8000/api/todos/${todoId}`
+        );
+        setloadedTodo(responseData.todo);
+        setFormData(
+          {
+            title: {
+              value: responseData.todo.title,
+              isValid: true,
+            },
 
-  const identifiedTodo = DUMMY_ITEMS.find((i) => i.id === todoId);
+            description: {
+              value: responseData.todo.description,
+              isValid: true,
+            },
 
-  const submitUpdateHandler = (event) => {
+            category: {
+              value: responseData.todo.category,
+              isValid: true,
+            },
+          },
+          true
+        );
+      } catch (err) {}
+    };
+    fetchTodo();
+  }, [sendRequest, todoId, setFormData]);
+
+  const submitUpdateHandler = async (event) => {
     event.preventDefault();
 
-    console.log(formState.inputs);
+    try {
+      await sendRequest(
+        `http://localhost:8000/api/todos/${todoId}`,
+        "PATCH",
+        JSON.stringify({
+          title: formState.inputs.title.value,
+          description: formState.inputs.description.value,
+          category: formState.inputs.category.value,
+        }),
+        {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + auth.token,
+        }
+      );
+    } catch (err) {}
   };
 
   return (
@@ -68,7 +94,7 @@ const CreateTodo = () => {
           errorText="Please enter valid title"
           validators={[VALIDATOR_REQUIRE()]}
           onInput={inputHandler}
-          initialValue={identifiedTodo.title}
+          initialValue={loadedTodo.title}
           initialValid={true}
         />
 
@@ -80,7 +106,7 @@ const CreateTodo = () => {
           validators={[VALIDATOR_REQUIRE()]}
           errorText="Please enter valid description"
           onInput={inputHandler}
-          initialValue={identifiedTodo.description}
+          initialValue={loadedTodo.description}
           initialValid={true}
         />
 
@@ -92,7 +118,7 @@ const CreateTodo = () => {
           validators={[VALIDATOR_REQUIRE()]}
           errorText="Please enter valid category"
           onInput={inputHandler}
-          initialValue={identifiedTodo.category}
+          initialValue={loadedTodo.category}
           initialValid={true}
         />
 

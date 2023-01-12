@@ -1,38 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useHttp } from "../../shared/hooks/http-hook";
 
 import TodoList from "../components/TodoList";
 
-import img from "../../shared/assets/img.png";
-
-const DUMMY_ITEMS = [
-  {
-    id: "i1",
-    title: "Go to shop",
-    image: img,
-    description: "Today i must go to shop",
-    category: "Shopping",
-  },
-  {
-    id: "i2",
-    title: "Go to shop",
-    image: img,
-    description: "Today i must go to shop",
-    category: "Education",
-  },
-  {
-    id: "i3",
-    title: "Go to shop",
-    image: img,
-    description: "Today i must go to shop",
-    category: "Fitness",
-  },
-];
-
 const TodoPage = () => {
+  const [loadedUsers, setLoadedUsers] = useState([]);
+  const { sendRequest, isError, isLoading, clearError } = useHttp();
+
+  useEffect(() => {
+    const fetchTodos = async () => {
+      const responseData = await sendRequest(
+        "http://localhost:8000/api/users/"
+      );
+      setLoadedUsers(responseData.users);
+    };
+    fetchTodos();
+  }, [sendRequest]);
+
   return (
     <div>
-      <h1 className="center">View Todos</h1>
-      <TodoList todos={DUMMY_ITEMS} />
+      <h1 className="center">View Other Todos</h1>
+      <TodoList users={loadedUsers} />
     </div>
   );
 };

@@ -1,19 +1,30 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useForm } from "../../shared/hooks/form-hook";
+import { useHttp } from "../../shared/hooks/http-hook";
+import { useNavigate } from "react-router-dom";
+import { VALIDATOR_REQUIRE } from "../../shared/utils/validators";
+import { AuthContext } from "../../shared/context/auth-context";
 
+import ImageUpload from "../../shared/components/Form/ImageUpload";
 import Card from "../../shared/components/UI/Card";
 import Input from "../../shared/components/Form/Input";
 import Button from "../../shared/components/Form/Button";
-import { VALIDATOR_REQUIRE } from "../../shared/utils/validators";
 
 const CreateTodo = () => {
+  const navigate = useNavigate();
+  const auth = useContext(AuthContext);
+  const { isLoading, isError, sendRequest, clearError } = useHttp();
   const [formState, inputHandler] = useForm(
     {
-      name: {
+      title: {
         value: "",
         isValid: false,
       },
       description: {
+        value: "",
+        isValid: false,
+      },
+      image: {
         value: "",
         isValid: false,
       },
@@ -25,21 +36,37 @@ const CreateTodo = () => {
     false
   );
 
-  const submitCreateHandler = (event) => {
+  const submitCreateHandler = async (event) => {
     event.preventDefault();
 
-    console.log(formState.inputs);
+    try {
+      const formData = new FormData();
+      formData.append("title", formState.inputs.title.value);
+      formData.append("description", formState.inputs.description.value);
+      formData.append("image", formState.inputs.image.value);
+      formData.append("category", formState.inputs.category.value);
+
+      await sendRequest(
+        "http://localhost:8000/api/todos/new",
+        "POST",
+        formData,
+        {
+          Authorization: "Bearer " + auth.token,
+        }
+      );
+      navigate("/");
+    } catch (err) {}
   };
 
   return (
     <Card>
       <form onSubmit={submitCreateHandler}>
         <Input
-          label="Name"
+          label="Title"
           element="input"
-          id="name"
+          id="title"
           type="text"
-          errorText="Please enter valid name"
+          errorText="Please enter valid title"
           validators={[VALIDATOR_REQUIRE()]}
           onInput={inputHandler}
         />
@@ -52,6 +79,13 @@ const CreateTodo = () => {
           validators={[VALIDATOR_REQUIRE()]}
           errorText="Please enter valid description"
           onInput={inputHandler}
+        />
+
+        <ImageUpload
+          id="image"
+          center
+          onInput={inputHandler}
+          errorText="Please upload image"
         />
 
         <Input
