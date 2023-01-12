@@ -1,31 +1,35 @@
 import React from "react";
 
-import TodoItem from "./TodoItem";
-
 import "./TodoList.css";
 
-const TodoList = (props) => {
-  let content;
+const TodoList = ({ users }) => {
+  return (
+    <ul className="todo_list_menu">
+      {users.map((user) => (
+        <li className="todo_list_item" key={user._id}>
+          <div className="todo_profile_img">
+            <img src={`http://localhost:8000/${user.image}`} alt="" />
+            <h1>{user.name}</h1>
+          </div>
 
-  if (props.todos.length === 0) {
-    content = <div>No available todos</div>;
-  } else {
-    content = (
-      <ul className="todo_list_menu">
-        {props.todos.map((todo) => (
-          <TodoItem
-            key={todo.id}
-            title={todo.title}
-            category={todo.category}
-            description={todo.description}
-            image={todo.image}
-          />
-        ))}
-      </ul>
-    );
-  }
-
-  return content;
+          <div className="todo_item_subItem">
+            {user.todos === 0 ? (
+              <h1>No todos for users</h1>
+            ) : (
+              user.todos.map((todo) => (
+                <div className="itm" key={todo.id}>
+                  <img src={`http://localhost:8000/${todo.image}`} alt="" />
+                  <h1>{todo.title}</h1>
+                  <p>{todo.description}</p>
+                  <span>{todo.category}</span>
+                </div>
+              ))
+            )}
+          </div>
+        </li>
+      ))}
+    </ul>
+  );
 };
 
 export default TodoList;

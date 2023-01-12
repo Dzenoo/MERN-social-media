@@ -1,9 +1,50 @@
 .todo_list_menu {
-  margin: auto;
   display: flex;
+  align-items: center;
+  justify-content: center;
   flex-wrap: wrap;
   gap: 2em;
-  justify-content: center;
+}
+
+.todo_list_item {
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  border-radius: 20px;
+  overflow: hidden;
+  max-width: 600px;
+}
+
+.todo_list_item .todo_profile_img {
+  display: flex;
   align-items: center;
-  padding: 40px;
+  gap: 2em;
+  padding: 20px;
+  font-size: 10px;
+  background-color: #333;
+  color: #fff;
+}
+
+.todo_list_item .todo_profile_img img {
+  width: 48px;
+  height: 48px;
+  border-radius: 60px;
+}
+
+.todo_list_menu .todo_list_item .itm {
+  text-align: center;
+  padding: 22px;
+  border-radius: 20px;
+  max-width: 700px;
+}
+
+.todo_list_menu .todo_list_item .itm img {
+  width: 48%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.todo_list_menu .todo_list_item .itm span {
+  background-color: rgb(167, 214, 255);
+  padding: 12px;
 }
