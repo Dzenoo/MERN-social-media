@@ -5,6 +5,18 @@ const HttpError = require("../models/http-error");
 const User = require("../models/user");
 const Todo = require("../models/todo");
 
+exports.getTodos = async (req, res, next) => {
+  let todosEi;
+  try {
+    todosEi = await Todo.find();
+  } catch (err) {
+    const error = new HttpError("Fetching todos failed, please try again", 500);
+    return next(error);
+  }
+
+  res.json({ todosEi });
+};
+
 exports.getTodoByUserId = async (req, res, next) => {
   const userId = req.params.uid;
 
@@ -12,7 +24,7 @@ exports.getTodoByUserId = async (req, res, next) => {
   try {
     userTodo = await User.findById(userId).populate("todos");
   } catch (err) {
-    const error = new HttpError("Fetching todos failed, please try again", 500);
+    const error = new HttpError("Fetching todo failed, please try again", 500);
     return next(error);
   }
 
@@ -33,18 +45,19 @@ exports.createTodo = async (req, res, next) => {
     );
   }
 
-  const { title, description, category, creator } = req.body;
+  const { title, description, category } = req.body;
 
   const createdTodo = new Todo({
     title,
     description,
+    image: req.file.path,
     category,
-    creator,
+    creator: req.userData.userId,
   });
 
   let user;
   try {
-    user = await User.findById(creator);
+    user = await User.findById(req.userData.userId);
   } catch (err) {
     const error = new HttpError("Creating todo failed, please try again.", 500);
     return next(error);
