@@ -5,7 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: rgba(36, 36, 36, 0.888);
+  background-color: rgb(195, 255, 255);
 }
 
 code {
@@ -42,6 +42,7 @@ a {
 .center {
   padding-top: 60px;
   text-align: center;
-  color: #fff;
+  color: #000;
   margin: auto;
+  padding-bottom: 60px;
 }
