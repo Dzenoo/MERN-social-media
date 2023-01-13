@@ -1,13 +1,21 @@
 import React, { useContext } from "react";
 import { AuthContext } from "../../context/auth-context";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../hooks/auth-hook";
 import { AiOutlineHome } from "react-icons/ai";
 
 import "./MainNavigation.css";
 import Button from "../Form/Button";
 
 const MainNavigation = () => {
+  const navigate = useNavigate();
   const auth = useContext(AuthContext);
+  const { user } = useAuth();
+
+  const logout = () => {
+    auth.logout();
+    navigate("/");
+  };
 
   return (
     <header className="navigation">
@@ -30,9 +38,15 @@ const MainNavigation = () => {
           </li>
         )}
 
+        {auth.isLoggedIn && (
+          <li>
+            <h3>Welcome {user.name}</h3>
+          </li>
+        )}
+
         {!auth.isLoggedIn && <Button to="/register">Login</Button>}
 
-        {auth.isLoggedIn && <Button onClick={auth.logout}>Logout</Button>}
+        {auth.isLoggedIn && <Button onClick={logout}>Logout</Button>}
       </ul>
     </header>
   );
