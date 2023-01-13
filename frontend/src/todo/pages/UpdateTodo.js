@@ -38,7 +38,7 @@ const CreateTodo = () => {
     const fetchTodo = async () => {
       try {
         const responseData = await sendRequest(
-          `http://localhost:8000/api/todos/${todoId}`
+          `${process.env.REACT_APP_BACKEND_URL}/todos/${id}`,
         );
         setloadedTodo(responseData.todoById);
         setFormData(
@@ -70,7 +70,7 @@ const CreateTodo = () => {
 
     try {
       await sendRequest(
-        `http://localhost:8000/api/todos/${todoId}`,
+      `${process.env.REACT_APP_BACKEND_URL}/todos/${id}`,
         "PATCH",
         JSON.stringify({
           title: formState.inputs.title.value,
