@@ -1,19 +1,21 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useForm } from "../../shared/hooks/form-hook";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useHttp } from "../../shared/hooks/http-hook";
 import { VALIDATOR_REQUIRE } from "../../shared/utils/validators";
-
-import Card from "../../shared/components/UI/Card";
-import Input from "../../shared/components/Form/Input";
-import Button from "../../shared/components/Form/Button";
 import { AuthContext } from "../../shared/context/auth-context";
 
+import Card from "../../shared/components/UI/Card";
+import ErrorModal from "../../shared/components/UI/ErrorModal";
+import Input from "../../shared/components/Form/Input";
+import Button from "../../shared/components/Form/Button";
+
 const CreateTodo = () => {
-  const { sendRequest, isError, isLoading, clearError } = useHttp();
-  const todoId = useParams().todoId;
+  const navigate = useNavigate();
   const auth = useContext(AuthContext);
-  const [loadedTodo, setloadedTodo] = useState();
+  const { sendRequest, isError, isLoading, clearError } = useHttp();
+  const [loadedTodo, setloadedTodo] = useState([]);
+  const todoId = useParams().todoId;
   const [formState, inputHandler, setFormData] = useForm(
     {
       title: {
@@ -38,21 +40,21 @@ const CreateTodo = () => {
         const responseData = await sendRequest(
           `http://localhost:8000/api/todos/${todoId}`
         );
-        setloadedTodo(responseData.todo);
+        setloadedTodo(responseData.todoById);
         setFormData(
           {
             title: {
-              value: responseData.todo.title,
+              value: responseData.todoById.title,
               isValid: true,
             },
 
             description: {
-              value: responseData.todo.description,
+              value: responseData.todoById.description,
               isValid: true,
             },
 
             category: {
-              value: responseData.todo.category,
+              value: responseData.todoById.category,
               isValid: true,
             },
           },
@@ -80,11 +82,15 @@ const CreateTodo = () => {
           Authorization: "Bearer " + auth.token,
         }
       );
+
+      navigate("/");
     } catch (err) {}
   };
 
   return (
     <Card>
+      <ErrorModal error={isError} onClear={clearError} />
+      {isLoading && <div className="center">loading...</div>}
       <form onSubmit={submitUpdateHandler}>
         <Input
           label="Title"
@@ -122,7 +128,9 @@ const CreateTodo = () => {
           initialValid={true}
         />
 
-        <Button type="submit">Save</Button>
+        <Button type="submit" disabled={!formState.isValid}>
+          Save
+        </Button>
       </form>
     </Card>
   );

@@ -11,21 +11,20 @@ const TodoList = ({ users }) => {
             <img src={`http://localhost:8000/${user.image}`} alt="" />
             <h1>{user.name}</h1>
           </div>
-
-          <div className="todo_item_subItem">
-            {user.todos === 0 ? (
-              <h1>No todos for users</h1>
+          <ul className="todo_list_submenu">
+            {user.todos.length === 0 ? (
+              <h1>No todos for user</h1>
             ) : (
               user.todos.map((todo) => (
-                <div className="itm" key={todo.id}>
+                <li className="todo_list_subitem" key={todo.id}>
                   <img src={`http://localhost:8000/${todo.image}`} alt="" />
                   <h1>{todo.title}</h1>
                   <p>{todo.description}</p>
                   <span>{todo.category}</span>
-                </div>
+                </li>
               ))
             )}
-          </div>
+          </ul>
         </li>
       ))}
     </ul>

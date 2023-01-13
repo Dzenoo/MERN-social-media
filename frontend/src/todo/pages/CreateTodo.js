@@ -6,6 +6,7 @@ import { VALIDATOR_REQUIRE } from "../../shared/utils/validators";
 import { AuthContext } from "../../shared/context/auth-context";
 
 import ImageUpload from "../../shared/components/Form/ImageUpload";
+import ErrorModal from "../../shared/components/UI/ErrorModal";
 import Card from "../../shared/components/UI/Card";
 import Input from "../../shared/components/Form/Input";
 import Button from "../../shared/components/Form/Button";
@@ -60,6 +61,8 @@ const CreateTodo = () => {
 
   return (
     <Card>
+      <ErrorModal error={isError} onClear={clearError} />
+      {isLoading && <div className="center">Loading...</div>}
       <form onSubmit={submitCreateHandler}>
         <Input
           label="Title"

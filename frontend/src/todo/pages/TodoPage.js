@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useHttp } from "../../shared/hooks/http-hook";
 
+import ErrorModal from "../../shared/components/UI/ErrorModal";
 import TodoList from "../components/TodoList";
 
 const TodoPage = () => {
@@ -19,8 +20,10 @@ const TodoPage = () => {
 
   return (
     <div>
+      <ErrorModal error={isError} onClear={clearError} />
+      {isLoading && <div className="center">Loading...</div>}
       <h1 className="center">View Other Todos</h1>
-      <TodoList users={loadedUsers} />
+      {!isError && loadedUsers && <TodoList users={loadedUsers} />}
     </div>
   );
 };
