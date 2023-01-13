@@ -1,5 +1,6 @@
 const { validationResult } = require("express-validator");
 const mongoose = require("mongoose");
+const fs = require("fs");
 const HttpError = require("../models/http-error");
 
 const User = require("../models/user");
@@ -15,6 +16,31 @@ exports.getTodos = async (req, res, next) => {
   }
 
   res.json({ todosEi });
+};
+
+exports.getTodoById = async (req, res, next) => {
+  const todoId = req.params.tid;
+
+  let todoById;
+  try {
+    todoById = await Todo.findById(todoId);
+  } catch (err) {
+    const error = new HttpError(
+      "Something went wrong, could not find a todo.",
+      500
+    );
+    return next(error);
+  }
+
+  if (!todoById) {
+    const error = new HttpError(
+      "Could not find place for the provided id.",
+      404
+    );
+    return next(error);
+  }
+
+  res.json({ todoById });
 };
 
 exports.getTodoByUserId = async (req, res, next) => {
@@ -124,14 +150,31 @@ exports.deleteTodo = async (req, res, next) => {
 
   let todo;
   try {
-    todo = await Todo.findById(todoId);
+    todo = await Todo.findById(todoId).populate("creator");
   } catch (err) {
     const error = new HttpError("Could not delete, please try again.", 500);
     return next(error);
   }
 
+  if (!todo) {
+    const error = new HttpError("Could not find todo for this id.", 404);
+    return next(error);
+  }
+
+  if (todo.creator.id !== req.userData.userId) {
+    const error = new HttpError("You are not allowed to delete this todo");
+    return next(error);
+  }
+
+  const imagePath = todo.image;
+
   try {
-    await todo.remove();
+    const sess = await mongoose.startSession();
+    sess.startTransaction();
+    await todo.remove({ session: sess });
+    todo.creator.todos.pull(todo);
+    await todo.creator.save({ session: sess });
+    await sess.commitTransaction();
   } catch (err) {
     const error = new HttpError(
       "Could not delete todo, please try again.",
@@ -139,6 +182,10 @@ exports.deleteTodo = async (req, res, next) => {
     );
     return next(error);
   }
+
+  fs.unlink(imagePath, (err) => {
+    console.log(err);
+  });
 
   res.json({ message: "Todo deleted..." });
 };
