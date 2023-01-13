@@ -15,7 +15,7 @@ const ProfileTodoItem = (props) => {
     alert("Are you sure to delete this todo?");
     try {
       await sendRequest(
-        `http://localhost:8000/api/todos/${id}`,
+       `${process.env.REACT_APP_BACKEND_URL}/todos/${id}`
         "DELETE",
         null,
         {
