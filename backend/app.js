@@ -53,7 +53,7 @@ mongoose
     "mongodb+srv://name:password@cluster0.8suhkcc.mongodb.net/?retryWrites=true&w=majority"
   )
   .then(() => {
-    app.listen(8000);
+    app.listen();
   })
   .catch((err) => {
     console.log(err);
