@@ -17,7 +17,7 @@ const TodoList = ({ users }) => {
             ) : (
               user.todos.map((todo) => (
                 <li className="todo_list_subitem" key={todo.id}>
-                  <img src={`http://localhost:8000/${todo.image}`} alt="" />
+                  <img src=`${process.env.REACT_APP_ASSETS_URL}` alt="" />
                   <h1>{todo.title}</h1>
                   <p>{todo.description}</p>
                   <span>{todo.category}</span>
