@@ -14,7 +14,7 @@ const Profile = () => {
     const fetchUserTodos = async () => {
       try {
         const responseData = await sendRequest(
-          `http://localhost:8000/api/todos/user/${auth.userId}`
+         `${process.env.REACT_APP_BACKEND_URL}/todos/user/${auth.userId}`,
         );
         setItems(responseData.todos);
       } catch (err) {}
