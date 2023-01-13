@@ -13,6 +13,28 @@ import Auth from "./user/pages/Auth";
 function App() {
   const { token, login, logout, userId } = useAuth();
 
+  let routes;
+
+  if (token) {
+    routes = (
+      <>
+        <Route path="/" element={<Todos />} />
+        <Route path="/users/:userId" element={<Profile />} />
+        <Route path="/users/new" element={<CreateTodo />} />
+        <Route path="/users/:userId/:todoId" element={<UpdateTodo />} />
+        <Route path="*" element={<Navigate to="/" />} />
+      </>
+    );
+  } else {
+    routes = (
+      <>
+        <Route path="/" element={<Todos />} />
+        <Route path="/register" element={<Auth />} />
+        <Route path="*" element={<Navigate to="/register" />} />
+      </>
+    );
+  }
+
   return (
     <>
       <AuthContext.Provider
@@ -25,14 +47,7 @@ function App() {
         }}
       >
         <MainNavigation />
-        <Routes>
-          <Route path="/" element={<Todos />} />
-          <Route path="/users/:userId" element={<Profile />} />
-          <Route path="/users/new" element={<CreateTodo />} />
-          <Route path="/users/:userId/:todoId" element={<UpdateTodo />} />
-          <Route path="/register" element={<Auth />} />
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
+        <Routes>{routes}</Routes>
       </AuthContext.Provider>
     </>
   );
