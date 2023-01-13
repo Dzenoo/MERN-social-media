@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import ImageUpload from "../../shared/components/Form/ImageUpload";
 import Button from "../../shared/components/Form/Button";
 import Card from "../../shared/components/UI/Card";
+import ErrorModal from "../../shared/components/UI/ErrorModal";
 import Input from "../../shared/components/Form/Input";
 
 const Auth = () => {
@@ -110,6 +111,8 @@ const Auth = () => {
 
   return (
     <Card>
+      <ErrorModal error={isError} onClear={clearError} />
+      {isLoading && <div className="center">loading...</div>}
       <h2>{authMode ? "Login" : "Register"}</h2>
       <form onSubmit={AuthHandler}>
         {!authMode && (

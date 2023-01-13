@@ -1,14 +1,35 @@
 import React, { useContext } from "react";
-import Button from "../../shared/components/Form/Button";
 import { AuthContext } from "../../shared/context/auth-context";
+import { useHttp } from "../../shared/hooks/http-hook";
+
+import Button from "../../shared/components/Form/Button";
 import "./ProfileTodoItem.css";
+import ErrorModal from "../../shared/components/UI/ErrorModal";
 
 const ProfileTodoItem = (props) => {
   const { id, title, description, image, category } = props;
   const auth = useContext(AuthContext);
+  const { isError, isLoading, sendRequest, clearError } = useHttp();
+
+  const deleteItemHandler = async () => {
+    alert("Are you sure to delete this todo?");
+    try {
+      await sendRequest(
+        `http://localhost:8000/api/todos/${id}`,
+        "DELETE",
+        null,
+        {
+          Authorization: "Bearer " + auth.token,
+        }
+      );
+      props.onDeleteTodo(id);
+    } catch (err) {}
+  };
 
   return (
     <li className="todo_item" id={id}>
+      <ErrorModal error={isError} onClear={clearError} />
+      {isLoading && <div className="center">Loading...</div>}
       <div className="todo_item_img">
         <img src={`http://localhost:8000/${image}`} alt={title} />
       </div>
@@ -20,7 +41,9 @@ const ProfileTodoItem = (props) => {
       <span>{category}</span>
 
       <div className="todo_item_actions">
-        <Button danger>Delete</Button>
+        <Button danger onClick={deleteItemHandler}>
+          Delete
+        </Button>
         <Button to={`/users/${auth.userId}/${id}`}>Edit</Button>
       </div>
     </li>

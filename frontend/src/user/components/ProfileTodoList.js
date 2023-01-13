@@ -19,6 +19,7 @@ const ProfileTodoList = (props) => {
             title={item.title}
             description={item.description}
             category={item.category}
+            onDeleteTodo={props.deleteTodo}
           />
         ))}
       </ul>

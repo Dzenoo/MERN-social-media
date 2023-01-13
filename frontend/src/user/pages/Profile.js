@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useHttp } from "../../shared/hooks/http-hook";
 import { AuthContext } from "../../shared/context/auth-context";
 
+import ErrorModal from "../../shared/components/UI/ErrorModal";
 import ProfileTodoList from "../components/ProfileTodoList";
 
 const Profile = () => {
@@ -22,10 +23,16 @@ const Profile = () => {
     fetchUserTodos();
   }, [sendRequest, auth.userId]);
 
+  const deleteTodoHandler = (todoId) => {
+    setItems((prevItem) => prevItem.filter((i) => i._id !== todoId));
+  };
+
   return (
     <div className="profile_wrapper">
+      <ErrorModal error={isError} onClear={clearError} />
+      {isLoading && <div className="center">loading...</div>}
       <div className="todoItems">
-        <ProfileTodoList items={items} />
+        <ProfileTodoList items={items} deleteTodo={deleteTodoHandler} />
       </div>
     </div>
   );
