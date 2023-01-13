@@ -48,7 +48,7 @@ const CreateTodo = () => {
       formData.append("category", formState.inputs.category.value);
 
       await sendRequest(
-        "http://localhost:8000/api/todos/new",
+        `${process.env.REACT_APP_BACKEND_URL}/todos/new`,
         "POST",
         formData,
         {
