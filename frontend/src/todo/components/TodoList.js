@@ -8,7 +8,7 @@ const TodoList = ({ users }) => {
       {users.map((user) => (
         <li className="todo_list_item" key={user._id}>
           <div className="todo_profile_img">
-            <img src={`http://localhost:8000/${user.image}`} alt="" />
+            <img src=`${process.env.REACT_APP_ASSETS_URL}` alt="" />
             <h1>{user.name}</h1>
           </div>
           <ul className="todo_list_submenu">
