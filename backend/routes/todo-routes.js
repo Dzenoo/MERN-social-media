@@ -11,10 +11,9 @@ router.get("/", todoContollers.getTodos);
 
 router.get("/user/:uid", todoContollers.getTodoByUserId);
 
-router.use(checkAuth);
-
 router.post(
   "/new",
+  checkAuth,
   fileUpload.single("image"),
   [
     check("title").not().isEmpty(),
@@ -24,8 +23,8 @@ router.post(
   todoContollers.createTodo
 );
 
-router.patch("/:tid", todoContollers.updateTodo);
+router.patch("/:tid", checkAuth, todoContollers.updateTodo);
 
-router.delete("/:tid", todoContollers.deleteTodo);
+router.delete("/:tid", checkAuth, todoContollers.deleteTodo);
 
 module.exports = router;
