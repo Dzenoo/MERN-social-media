@@ -5,7 +5,7 @@ import ErrorModal from "../../shared/components/UI/ErrorModal";
 import TodoList from "../components/TodoList";
 
 const TodoPage = () => {
-  const [loadedUsers, setLoadedUsers] = useState([]);
+  const [loadedTodos, setLoadedTodos] = useState([]);
   const { sendRequest, isError, isLoading, clearError } = useHttp();
 
   useEffect(() => {
@@ -13,7 +13,7 @@ const TodoPage = () => {
       const responseData = await sendRequest(
         `${process.env.REACT_APP_BACKEND_URL}/users`,
       );
-      setLoadedUsers(responseData.users);
+      setLoadedTodos(responseData.todosEi);
     };
     fetchTodos();
   }, [sendRequest]);
@@ -23,7 +23,7 @@ const TodoPage = () => {
       <ErrorModal error={isError} onClear={clearError} />
       {isLoading && <div className="center">Loading...</div>}
       <h1 className="center">View Other Todos</h1>
-      {!isError && loadedUsers && <TodoList users={loadedUsers} />}
+      {!isError && loadedTodos && <TodoList todos={loadedTodos} />}
     </div>
   );
 };
