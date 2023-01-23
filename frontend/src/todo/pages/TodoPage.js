@@ -15,7 +15,9 @@ const TodoPage = () => {
       );
       setLoadedTodos(responseData.todosEi);
     };
+    
     fetchTodos();
+    
   }, [sendRequest]);
 
   return (
