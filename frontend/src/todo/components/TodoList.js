@@ -2,28 +2,22 @@ import React from "react";
 
 import "./TodoList.css";
 
-const TodoList = ({ users }) => {
+const TodoList = ({ todos }) => {
   return (
     <ul className="todo_list_menu">
-      {users.map((user) => (
-        <li className="todo_list_item" key={user._id}>
+      {todos.map((todo) => (
+        <li className="todo_list_item" key={todo._id}>
           <div className="todo_profile_img">
-            <img src=`${process.env.REACT_APP_ASSETS_URL}` alt="" />
-            <h1>{user.name}</h1>
+            <img src={`http://localhost:8000/${todo.creator.image}`} alt="" />
+            <h1>{todo.creator.name}</h1>
           </div>
           <ul className="todo_list_submenu">
-            {user.todos.length === 0 ? (
-              <h1>No todos for user</h1>
-            ) : (
-              user.todos.map((todo) => (
-                <li className="todo_list_subitem" key={todo.id}>
-                  <img src=`${process.env.REACT_APP_ASSETS_URL}` alt="" />
-                  <h1>{todo.title}</h1>
-                  <p>{todo.description}</p>
-                  <span>{todo.category}</span>
-                </li>
-              ))
-            )}
+            <li className="todo_list_subitem" key={todo._id}>
+              <img src={`http://localhost:8000/${todo.image}`} alt="" />
+              <h1>{todo.title}</h1>
+              <p>{todo.description}</p>
+              <span>{todo.category}</span>
+            </li>
           </ul>
         </li>
       ))}
